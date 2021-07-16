@@ -6,12 +6,17 @@ use App\Repository\CampusRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CampusRepository::class)
  */
-class Campus
+class Campus implements FormTypeInterface
 {
     /**
      * @ORM\Id
@@ -117,5 +122,35 @@ class Campus
         }
 
         return $this;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        // TODO: Implement buildForm() method.
+    }
+
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        // TODO: Implement buildView() method.
+    }
+
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        // TODO: Implement finishView() method.
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        // TODO: Implement configureOptions() method.
+    }
+
+    public function getBlockPrefix()
+    {
+        // TODO: Implement getBlockPrefix() method.
+    }
+
+    public function getParent()
+    {
+        // TODO: Implement getParent() method.
     }
 }
