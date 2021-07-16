@@ -21,8 +21,7 @@ class State
     private $id;
 
     /**
-     * @Assert\Choice(choices ={"créée", "ouverte", "cloturée", "activité en cours", "passée", "annulée", "archivée"})
-     * @ORM\Column(type="string", length=20, columnDefinition="enum('créée', 'ouverte', 'cloturée', 'activité en cours', 'passée', 'annulée', 'archivée')")
+     * @ORM\Column(type="string", length=20)
      */
     private $wording;
 
