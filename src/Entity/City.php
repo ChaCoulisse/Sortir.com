@@ -30,7 +30,7 @@ class City
      * @Assert\NotBlank(message="Veuillez rentrer un code postal")
      * @Assert\Regex("/[0-9]{2}[0-9]{3}/", message="Code postal invalide"))
      * @Assert\GreaterThan(1000, message="Code postal invalide")
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     private $zipCode;
 
@@ -61,12 +61,12 @@ class City
         return $this;
     }
 
-    public function getZipCode(): ?int
+    public function getZipCode(): ?string
     {
         return $this->zipCode;
     }
 
-    public function setZipCode(int $zipCode): self
+    public function setZipCode(string $zipCode): self
     {
         $this->zipCode = $zipCode;
 
