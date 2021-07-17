@@ -4,8 +4,9 @@
 
 {% block body %}
 
+
     <h2>Date du jour : {{ 'now'|date("d/m/Y") }}</h2>
-    <h2>Participant : </h2>
+    <h2>Participant : {{ app.user.username }}</h2>
 
     <div>
         <div>
@@ -33,18 +34,20 @@
                 <th>Date de la sortie</th>
                 <th>Clôture</th>
                 <th>Inscrits/places</th>
+                <th>Etat</th>
+                <th>Organisateur</th>
             </tr>
         </thead>
         <tbody>
             {% for trip in tripList %}
-            <tr>
-                <td>{{ trip.name }}</td>
-                <td>{{ trip.startHour|date("d/m/Y h:i") }}</td>
-                <td>{{ trip.limitDate|date("d/m/Y") }}</td>
-                <td>{{ trip.limitedPlace }}</td>
-                {#            <td>{{ trip.state }}</td>#}
-                {#            <td>{{ trip.organizer }}</td>#}
-            </tr>
+                <tr>
+                    <td>{{ trip.name }}</td>
+                    <td>{{ trip.startHour|date("d/m/Y h:i") }}</td>
+                    <td>{{ trip.limitDate|date("d/m/Y") }}</td>
+                    <td>{{ trip.limitedPlace }}</td>
+                    <td>{{ trip.state.wording }}</td>
+                    <td>{{ trip.organizer.username }}</td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Trip;
 use App\Form\SearchTripType;
 use App\Repository\TripRepository;
+use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,12 +22,10 @@ class MainController extends AbstractController
         $searchTripForm = $this->createForm(SearchTripType::class, $trip);
         $searchTripForm->handleRequest($request);
 
-
-
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
+            'tripList' => $tripRepository->findAllTrip(),
             'searchTripForm' => $searchTripForm->createView(),
-            'tripList' => $tripRepository->findAll()
         ]);
     }
 }
