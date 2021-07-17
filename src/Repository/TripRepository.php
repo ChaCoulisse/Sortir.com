@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Trip;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Statement;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,6 +20,20 @@ class TripRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Trip::class);
     }
+
+    public function findAllTrip(){
+        $queryBuilder = $this->createQueryBuilder('trip')
+                ->join('trip.campus', 'campus')->addSelect('campus')
+                ->join('trip.organizer', 'organizer')->addSelect('organizer')
+                ->join('trip.state', 'state')->addSelect('state')
+                ->where('state.wording != :archive')
+                ->setParameter('archive', 'Archivé')
+//        ->where('campus.name = :campusName');
+//        ->setParameter('campusName', $campus);
+                ->addOrderBy('trip.startHour', 'ASC');
+        return $queryBuilder->getQuery()->getResult();
+    }
+
 
     // /**
     //  * @return Trip[] Returns an array of Trip objects
