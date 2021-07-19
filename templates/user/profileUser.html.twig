@@ -19,11 +19,11 @@
     </div>
     <div class="">
         {% if app.user.id == user.id %}
-        <button type="button"><a href="{{ path('user_modify') }}">Modifier le profil</a></button>
+            <a href="{{ path('user_modify') }}">Modifier le profil</a>
         {% endif %}
     </div>
-    <div>
-        <button type="button"><a href="{{ path('') }}">Retour</a></button>
+    <div class="">
+        <a href="{{ path('main_home') }}">Retour</a>
     </div>
 
 {% endblock %}

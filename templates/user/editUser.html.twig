@@ -21,13 +21,15 @@
                 {{ form_row(editUserForm.email) }}
             </div>
             <div class="">
-                {{ form_row(editUserForm.password) }}
-            </div>
-            <div class="">
                 {{ form_row(editUserForm.campus) }}
             </div>
+            <div class="">
+                {{ form_row(editUserForm.password) }}
+            </div>
             <button type="submit">Enregistrer</button>
-
+            <div class="">
+            <a href="{{ path('user_profile', {'id': app.user.id}) }}">Retour</a>
+            </div>
         {{ form_end(editUserForm) }}
 
 {% endblock %}

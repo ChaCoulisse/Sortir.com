@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\EditAccountFormType;
 use App\Form\EditPasswordFormType;
+// use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +16,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class EditUserController extends AbstractController
 {
     /**
-     * @Route("/user/profile", name="user_profile")
+     * @Route("/user/profile/{id}", name="user_profile")
      */
-    public function profileUser(User $user): Response
+    public function profileUser(Request $request, EntityManagerInterface $entityManager, $id): Response
     {
+    //    $user = $this->getUser();
+    //    $user = $userRepository->find($id);
+        $user = $entityManager->getRepository(User::class)->find($id);
+
+
         return $this->render( 'user/profileUser.html.twig', [
             'user' => $user,
         ]);
@@ -39,7 +45,7 @@ class EditUserController extends AbstractController
         if ($editUserForm->isSubmitted() && $editUserForm->isValid()) {
             $entityManager->persist($user);
             $entityManager->flush();
-            return $this->redirectToRoute("user_profile");
+            return $this->redirectToRoute('user_modify');
         }
 
         return $this->render('user/editUser.html.twig', [
@@ -68,7 +74,7 @@ class EditUserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute("user_profile");
+            return $this->redirectToRoute('user_profile');
         }
         return $this->render('user/editPassword.html.twig', [
             'editPasswordForm' => $editPasswordForm->createView(),

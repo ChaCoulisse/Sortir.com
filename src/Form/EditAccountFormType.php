@@ -50,7 +50,7 @@ class EditAccountFormType extends AbstractType
                 ],
                 'invalid_message' => 'Mot de passe incorrect',
                 'required' => true,
-                'first_options' => ['label' => 'Mot de passe'],
+                'first_options' => ['label' => 'Mot de passe actuel'],
                 'second_options' => ['label' => 'Répéter mot de passe'],
             ])
             ->add('userName',TextType::class, [
