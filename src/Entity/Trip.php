@@ -37,14 +37,14 @@ class Trip
     /**
      * @Assert\NotBlank(message="Veuillez rentrer une durée")
      * @Assert\GreaterThan(0)
-     * @ORM\Column(type="time")
+     * @ORM\Column(type="integer")
      */
     private $duration;
 
     /**
      * @Assert\NotBlank(message="Veuillez rentrer une date de fin d'inscription")
      * @Assert\LessThan(propertyPath="startHour", message="Votre date limite d'inscription doit être inférieure à la date de début de l'évènement.")
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetimetz")
      */
     private $limitDate;
 
