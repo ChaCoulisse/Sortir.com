@@ -27,6 +27,9 @@
         <button type="submit" class="btn">Rechercher</button>
     </div>
 
+    <div>
+    </div>
+
     <table>
         <thead>
             <tr>
@@ -36,17 +39,33 @@
                 <th>Inscrits/places</th>
                 <th>Etat</th>
                 <th>Organisateur</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for trip in tripList %}
-                <tr>
+                <tr id="{{ trip.id }}">
                     <td>{{ trip.name }}</td>
                     <td>{{ trip.startHour|date("d/m/Y h:i") }}</td>
-                    <td>{{ trip.limitDate|date("d/m/Y") }}</td>
-                    <td>{{ trip.limitedPlace }}</td>
+                    <td>{{ trip.limitDate|date("d/m/Y h:i") }}</td>
+                    <td>{{ trip.participant|length }} / {{ trip.limitedPlace }}</td>
                     <td>{{ trip.state.wording }}</td>
                     <td>{{ trip.organizer.username }}</td>
+                    <td><a href="#">Afficher</a>
+                        {% if trip.organizer.username == app.user.username %}
+                            <a href="#">Modifier</a>
+{#                            {{ dump(trip.startHour.add(new DateInterval('PT' ~ trip.duration.timestamp ~ 'S'))) }}#}
+{#                            {%  if 'now'|date("d/m/Y i:m") < (trip.startHour.add(trip.duration)) %}#}
+{#                                <a href="#">Annuler</a>#}
+{#                                <a href="#">Publier</a>#}
+{#                            {% endif %}#}
+                        {% endif %}
+                        {% for participant in trip.participant %}
+                            {% if app.user.username == participant.username %}
+                                <a href="#">Se désister</a>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
