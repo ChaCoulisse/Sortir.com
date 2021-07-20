@@ -37,7 +37,7 @@ class Trip
     /**
      * @Assert\NotBlank(message="Veuillez rentrer une durée")
      * @Assert\GreaterThan(0)
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="time")
      */
     private $duration;
 
@@ -69,7 +69,7 @@ class Trip
     private $organizer;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="participantsTrip")
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="participant")
      */
     private $participant;
 
@@ -133,7 +133,6 @@ class Trip
     public function setDuration(\DateTimeInterface $duration): self
     {
         $this->duration = $duration;
-
         return $this;
     }
 
