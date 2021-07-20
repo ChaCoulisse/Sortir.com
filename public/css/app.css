@@ -58,6 +58,59 @@ nav li {
     margin-right: 1rem;
 }
 
+/*
+nav ul li{
+    float: left;
+    width: 25%;
+    text-align: center;
+    position: relative;
+}
+
+!*
+nav li {
+    margin-right: 1rem;
+}*!
+
+.sousMenu{
+    display: none;
+    box-shadow: #DDDDDD;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+}
+nav ul::after{
+    content: "";
+    display: table;
+    clear: both;
+}
+
+nav > ul li :hover .sousMenu{
+    display: block;
+}
+
+.sousMenu li{
+    float: none;
+    width: 100%;
+    text-align: left;
+}
+
+.sousMenu a{
+    padding: 10px;
+    border-bottom: none;
+}
+
+.sousMenu a:hover{
+    border-bottom: none;
+}
+.deroulant >a::after{
+    content:"▼";
+    font-size:12px;
+}
+*/
+
+
+
+
 .series-list {
     display: grid;
     grid-gap: 10px;
