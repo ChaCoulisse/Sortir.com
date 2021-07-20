@@ -91,6 +91,11 @@ class Trip
      */
     private $place;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $cancelReason;
+
     public function __construct()
     {
         $this->participant = new ArrayCollection();
@@ -125,12 +130,12 @@ class Trip
         return $this;
     }
 
-    public function getDuration(): ?\DateTimeInterface
+    public function getDuration(): ?int
     {
         return $this->duration;
     }
 
-    public function setDuration(\DateTimeInterface $duration): self
+    public function setDuration(int $duration): self
     {
         $this->duration = $duration;
         return $this;
@@ -240,6 +245,18 @@ class Trip
     public function setPlace(?Place $place): self
     {
         $this->place = $place;
+
+        return $this;
+    }
+
+    public function getCancelReason(): ?string
+    {
+        return $this->cancelReason;
+    }
+
+    public function setCancelReason(string $cancelReason): self
+    {
+        $this->cancelReason = $cancelReason;
 
         return $this;
     }

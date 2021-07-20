@@ -1,6 +1,62 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Accueil{% endblock %}
+
 {% block body %}
-    <h1>Coucou</h1>
+
+
+    <h2>Date du jour : {{ 'now'|date("d/m/Y") }}</h2>
+    <h2>Participant : {{ app.user.username }}</h2>
+
+    <div>
+        <div>
+        <h3>Filtrer les sorties</h3>
+            {{ form_row(searchTripForm.campus) }}
+            {{ form_row(searchTripForm.name) }}
+            <div>
+                {{ form_row(searchTripForm.start) }}
+                {{ form_row(searchTripForm.end) }}
+            </div>
+        </div>
+        <div>
+            {{ form_row(searchTripForm.organizer) }}
+            {{ form_row(searchTripForm.participant) }}
+            {{ form_row(searchTripForm.notParticipant) }}
+            {{ form_row(searchTripForm.state) }}
+        </div>
+        <button type="submit" class="btn">Rechercher</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+                <th>Clôture</th>
+                <th>Inscrits/places</th>
+                <th>Etat</th>
+                <th>Organisateur</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trip in tripList %}
+                <tr>
+                    <td>{{ trip.name }}</td>
+                    <td>{{ trip.startHour|date("d/m/Y h:i") }}</td>
+                    <td>{{ trip.limitDate|date("d/m/Y") }}</td>
+                    <td>{{ trip.limitedPlace }}</td>
+                    <td>{{ trip.state.wording }}</td>
+                    <td><a href="#" >{{ trip.organizer.username }}</a></td>
+                    <td><a href="{{ path('trip_display', {'id':trip.id}) }}">Afficher</a></td>
+
+                    <td>
+
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="{{ path('trip_create') }}" title="Créer une sortie">Créer une sortie</a>
 {% endblock %}
-{% block title %} {{parent()}} | Home {% endblock %}

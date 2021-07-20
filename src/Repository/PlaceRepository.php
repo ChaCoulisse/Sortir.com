@@ -19,6 +19,15 @@ class PlaceRepository extends ServiceEntityRepository
         parent::__construct($registry, Place::class);
     }
 
+    public function displayPlace($id)
+    {
+        $queryBuilder = $this->createQueryBuilder('place')
+            ->join('place.city', 'city')->addSelect('city')
+           ->where('place.id = :id')
+           ->setParameter('id', $id);
+        //($queryBuilder->getQuery()->getResult());
+        return $queryBuilder->getQuery()->getResult();
+    }
     // /**
     //  * @return Place[] Returns an array of Place objects
     //  */
