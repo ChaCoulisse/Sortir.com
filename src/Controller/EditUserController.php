@@ -3,15 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\ChangePasswordFormType;
 use App\Form\EditAccountFormType;
-use App\Form\EditPasswordFormType;
 // use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+//use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class EditUserController extends AbstractController
 {
@@ -56,25 +57,25 @@ class EditUserController extends AbstractController
     /**
      * @Route("/user/password", name="user_password")
      */
-    public function editPassword(UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
+    public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
 
-        $editPasswordForm = $this->createForm(EditPasswordFormType::class, $user);
-        $editPasswordForm->handleRequest();
+        $editPasswordForm = $this->createForm(ChangePasswordFormType::class, $user);
+        $editPasswordForm->handleRequest($request);
 
         if($editPasswordForm->isSubmitted() && $editPasswordForm->isValid()) {
             $user->setPassword(
-                $passwordHasher->hashPassword(
+                $passwordEncoder->encodePassword(
                     $user,
-                    $editPasswordForm->get('password')->getData()
+                    $editPasswordForm->get('plainPassword')->getData()
                 )
             );
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('user_profile');
+            return $this->redirectToRoute('user_password');
         }
         return $this->render('user/editPassword.html.twig', [
             'editPasswordForm' => $editPasswordForm->createView(),
