@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Afficher une sortie{% endblock %}
+
+{% block body %}
+    <h1>Afficher une sortie</h1>
+    {% for trip in tripDisplay%}
+        <div>
+            Nom de la sortie: {{trip.name }}
+            <br>
+            Date et heure de la sortie: {{trip.startHour|date("d/m/Y h:i")}}
+            <br>
+            Date limite d'inscription: {{trip.limitDate|date("d/m/Y") }}</td>
+            <br>
+            Nombre de places: {{trip.limitedPlace }}
+            <br>
+            Durée: {{trip.duration }} minutes
+            <br>
+            Description et infos: {{trip.infoTrip}}
+        </div>
+        <div>
+            Campus: {{trip.campus.name}}
+            <br>
+            Lieu: {{trip.place.name}}
+            <br>
+            Rue: {{trip.place.street}}
+            <br>
+            Code Postal: {{trip.place.city.zipCode }}
+            <br>
+            Latitude: {{trip.place.latitude}}
+            <br>
+            Longitude:{{trip.place.longitude}}
+        </div>
+    {% endfor %}
+    <br>
+        <table>
+            <thead>
+            <tr>
+                <th>Pseudo</th>
+                <th>Nom</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for participant in listParticipants %}
+                <tr>
+                    <td>{{ participant.username }}</td>
+                    <td><a href="#" > {{ participant.firstName}} {{ participant.lastName}} (lien a créer avec Dorian)</a></td>
+{#                    <td><a href="{{ path('trip_display', {'id':trip.id}) }}">Afficher</a></td>#}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    <br>
+{% endblock %}
