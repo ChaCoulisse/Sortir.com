@@ -5,6 +5,7 @@
 {% block body %}
     <h1>Créer une sortie</h1>
     <div class="col-left">
+        {{ form_start(tripForm) }}
         {{ form_row(tripForm.name) }}
         {{ form_row(tripForm.startHour) }}
         {{ form_row(tripForm.limitDate) }}
@@ -13,9 +14,11 @@
         {{ form_row(tripForm.infoTrip) }}
     </div>
     <br>
-    {% for place in placeDisplay%}
     <div class="col-right">
-        <p>Campus : afficher le campus de l'organisateur avec req Dorian</p>
+    {% for campus in campusOrganizer%}
+        <p>Campus : {{campus.campus.name }} (revoir parametre req 22)</p>
+    {% endfor %}
+    {% for place in placeDisplay%}
         {{ form_row(tripForm.city) }}
         {{ form_row(tripForm.place) }}
         <p>Rue (revoir parametre req 1) :{{place.street}}</p>
@@ -26,8 +29,13 @@
     {% endfor %}
     <br>
     <div class="bottom">
-    <button type="submit" class="btn">Enregistrer</button>
+    <button class="btn">Enregistrer</button>
     <button type="submit" class="btn">Publier la sortie</button>
     <a href="{{ path('main_home') }}" title="Annuler">Annuler</a>
+
+        {% for error in field_errors(tripForm.name) %}
+        <div class="error">{{ error }}</div>
+{% endfor %}
+        {{ form_end(tripForm) }}
     </div>
 {% endblock %}

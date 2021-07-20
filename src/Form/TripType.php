@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -36,8 +37,10 @@ class TripType extends AbstractType
             ->add('limitedPlace', IntegerType::class, [
                 'label'=>'Nombre de places :'
             ])
-            ->add('duration', IntegerType::class, [
-                'label'=>'Durée :'
+            ->add('duration', TimeType::class, [
+                'label'=>'Durée :',
+                'html5' => true,
+                'widget'=>'single_text'
             ])
             ->add('infoTrip', TextareaType::class, [
                 'label'=>'Description et infos :'
@@ -59,6 +62,13 @@ class TripType extends AbstractType
                 'class'=> Place::class,
                 'choice_label'=>'name'
             ])
+            ->add('street',EntityType::class,[
+                'mapped' => false,
+                'label'=>'Rue :',
+                'class'=> Place::class,
+                'choice_label'=>'name'
+            ])
+
         ;
     }
 

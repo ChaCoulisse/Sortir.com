@@ -14,7 +14,7 @@
             <br>
             Nombre de places: {{trip.limitedPlace }}
             <br>
-            Durée: {{trip.duration }} minutes
+            Durée: {{trip.duration |date("h:i") }}
             <br>
             Description et infos: {{trip.infoTrip}}
         </div>
