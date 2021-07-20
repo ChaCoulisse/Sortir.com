@@ -76,9 +76,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $organizedTrips;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Trip::class, mappedBy="participants")
+     * @ORM\ManyToMany(targetEntity=Trip::class, mappedBy="participant")
      */
-    private $participantsTrip;
+    private $participant;
 
     /**
      * @ORM\Column(type="json")
@@ -88,7 +88,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->organizedTrips = new ArrayCollection();
-        $this->participantsTrip = new ArrayCollection();
+        $this->participant = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -226,25 +226,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection|Trip[]
      */
-    public function getParticipantsTrip(): Collection
+    public function getParticipant(): Collection
     {
-        return $this->participantsTrip;
+        return $this->participant;
     }
 
-    public function addParticipantsTrip(Trip $participantsTrip): self
+    public function addParticipant(Trip $participant): self
     {
-        if (!$this->participantsTrip->contains($participantsTrip)) {
-            $this->participantsTrip[] = $participantsTrip;
-            $participantsTrip->addParticipants($this);
+        if (!$this->participant->contains($participant)) {
+            $this->participant[] = $participant;
+            $participant->addParticipant($this);
         }
 
         return $this;
     }
 
-    public function removeParticipantsTrip(Trip $participantsTrip): self
+    public function removeParticipant(Trip $participant): self
     {
-        if ($this->participantsTrip->removeElement($participantsTrip)) {
-            $participantsTrip->removeParticipants($this);
+        if ($this->participant->removeElement($participant)) {
+            $participant->removeParticipant($this);
         }
 
         return $this;

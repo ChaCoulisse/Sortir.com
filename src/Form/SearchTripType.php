@@ -47,7 +47,7 @@ class SearchTripType extends AbstractType
                 'required' => false])
             ->add('notParticipant', CheckboxType::class, [
                 'mapped' => false,
-                'label'    => 'Sorties auxquelles je suis inscrit/e',
+                'label'    => 'Sorties auxquelles je ne suis pas inscrit/e',
                 'required' => false])
             ->add('state', CheckboxType::class, [
                 'mapped' => false,
