@@ -52,6 +52,7 @@ class Place
 
     /**
      * @ORM\OneToMany(targetEntity=Trip::class, mappedBy="place")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $trips;
 

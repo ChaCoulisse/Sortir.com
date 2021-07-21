@@ -65,7 +65,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/Desactiver/{id}", name="user_inactive")
+     * @Route("/desactiver/{id}", name="user_inactive")
      */
     public function inactivate($id, EntityManagerInterface $em){
         $user=$em->getRepository(User::class)->find($id);
@@ -75,7 +75,7 @@ class AdminController extends AbstractController
         return $this->redirectToRoute("user_list");
     }
     /**
-     * @Route("/Activer/{id}", name="user_active")
+     * @Route("/activer/{id}", name="user_active")
      */
     public function activate($id, EntityManagerInterface $em){
         $user=$em->getRepository(User::class)->find($id);
@@ -86,7 +86,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/Supprimer/{id}", name="user_delete")
+     * @Route("/supprimer/{id}", name="user_delete")
      */
     public function delete($id, EntityManagerInterface $em){
         $user=$em->getRepository(User::class)->find($id);

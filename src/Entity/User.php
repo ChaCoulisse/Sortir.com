@@ -85,6 +85,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $roles = [];
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $actif;
+
     public function __construct()
     {
         $this->organizedTrips = new ArrayCollection();
@@ -189,6 +194,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCampus(?campus $campus): self
     {
         $this->campus = $campus;
+
+        return $this;
+    }
+
+    public function getActif():?bool
+    {
+        return $this->actif;
+    }
+
+    /**
+     * @param mixed $actif
+     */
+    public function setActif(bool $actif): self
+    {
+        $this->actif = $actif;
 
         return $this;
     }

@@ -36,7 +36,6 @@ class Trip
 
     /**
      * @Assert\NotBlank(message="Veuillez rentrer une durée")
-     * @Assert\GreaterThan(0)
      * @ORM\Column(type="time")
      */
     private $duration;
@@ -64,7 +63,7 @@ class Trip
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="organizedTrips")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $organizer;
 
