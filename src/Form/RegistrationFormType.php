@@ -8,7 +8,9 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -20,10 +22,22 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('userName')
-            ->add('firstname')
-            ->add('lastname')
-            ->add('phone')
+            ->add('userName', TextType::class, [
+                'label' => 'Pseudo :',
+                'required'=>'true',
+            ])
+            ->add('firstname', TextType::class, [
+                'label' => 'Prénom :',
+                'required'=>'true',
+            ])
+            ->add('lastname', TextType::class, [
+                'label' => 'Nom de famille :',
+                'required'=>'true',
+            ])
+            ->add('phone', TextType::class, [
+                'label' => 'Numéro de téléphone :',
+                'required'=>'true',
+            ])
             ->add('campus', EntityType::class, [
                 'label'=>'Campus :',
                 'class'=>Campus::class,
@@ -31,7 +45,10 @@ class RegistrationFormType extends AbstractType
                 'required'=>'true',
                 ])
 
-            ->add('email')
+            ->add('email', EmailType::class, [
+                'label' => 'Email :',
+                'required'=>'true',
+            ])
             ->add('password', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller

@@ -65,12 +65,13 @@ class EditUserController extends AbstractController
         $editPasswordForm->handleRequest($request);
 
         if($editPasswordForm->isSubmitted() && $editPasswordForm->isValid()) {
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $editPasswordForm->get('plainPassword')->getData()
-                )
-            );
+
+            $newPassword = $passwordEncoder->encodePassword(
+                                $user,
+                                $editPasswordForm->get('plainPassword')->getData()
+                            );
+
+            $user->setPassword($newPassword);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();

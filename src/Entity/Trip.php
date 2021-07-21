@@ -51,7 +51,7 @@ class Trip
     /**
      * @Assert\NotBlank(message="Veuillez rentrer un nombre maximum de participants")
      * @Assert\GreaterThan (1)
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="trip")
      */
     private $limitedPlace;
 
@@ -130,12 +130,12 @@ class Trip
         return $this;
     }
 
-    public function getDuration(): ?int
+    public function getDuration(): ?\DateTimeInterface
     {
         return $this->duration;
     }
 
-    public function setDuration(int $duration): self
+    public function setDuration(\DateTimeInterface $duration): self
     {
         $this->duration = $duration;
         return $this;
