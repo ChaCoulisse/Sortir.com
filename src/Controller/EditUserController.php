@@ -44,6 +44,15 @@ class EditUserController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         if ($editUserForm->isSubmitted() && $editUserForm->isValid()) {
+            //$pictureForm = $editUserForm->get('picture')->getData();
+            //$pictureName = md5(uniqid()).'.'.$pictureForm->guessExtension();
+            //$pictureForm->move(
+            //    $this->getParameter('pictures_directory'),
+            //    $pictureName
+            //);
+
+            //$user->setProfilePicture($pictureName);
+
             $entityManager->persist($user);
             $entityManager->flush();
             return $this->redirectToRoute('user_modify');
