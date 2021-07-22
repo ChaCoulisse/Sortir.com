@@ -51,22 +51,40 @@ class TripType extends AbstractType
                 'class'=> Campus::class,
                 'choice_label'=>'name'
             ])
+            ->add('place', EntityType::class,[
+                'label'=>'Lieu :',
+                'class'=> Place::class,
+                'choice_label'=>'name'
+            ])
             ->add('city',EntityType::class,[
                 'mapped' => false,
                 'label'=>'Ville :',
                 'class'=> City::class,
                 'choice_label'=>'name'
             ])
-            ->add('place', EntityType::class,[
-                'label'=>'Lieu :',
-                'class'=> Place::class,
-                'choice_label'=>'name'
-            ])
             ->add('street',EntityType::class,[
                 'mapped' => false,
                 'label'=>'Rue :',
                 'class'=> Place::class,
-                'choice_label'=>'name'
+                'choice_label'=>'street'
+            ])
+            ->add('zip_code',EntityType::class,[
+                'mapped' => false,
+                'label'=>'Code Postal :',
+                'class'=> City::class,
+                'choice_label'=>'zip_code'
+            ])
+            ->add('latitude',EntityType::class,[
+                'mapped' => false,
+                'label'=>'Latitude :',
+                'class'=> Place::class,
+                'choice_label'=>'latitude'
+            ])
+            ->add('longitude',EntityType::class,[
+                'mapped' => false,
+                'label'=>'Longitude :',
+                'class'=> Place::class,
+                'choice_label'=>'longitude'
             ])
 
         ;

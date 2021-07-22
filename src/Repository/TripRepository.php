@@ -80,6 +80,17 @@ class TripRepository extends ServiceEntityRepository
             dd($queryBuilder->getQuery()->getResult());
         }
 
+    public function updateState($tripId, $stateId)
+    {
+        $queryBuilder = $this->createQueryBuilder('trip')
+            ->where('trip.id = :tripId')
+            ->setParameter('tripId', $tripId)
+            ->update()
+            ->set('trip.state', ':id')
+            ->setParameter('id', $stateId);
+        return $updateState=$queryBuilder->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Trip[] Returns an array of Trip objects
     //  */

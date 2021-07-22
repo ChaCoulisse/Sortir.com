@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Campus;
 use App\Entity\Trip;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -17,16 +19,14 @@ class SearchTripType extends AbstractType
     {
 
         $builder
-            ->add('campus', ChoiceType::class, [
-                'choices' =>[
-                    'Nantes' =>'Nantes',
-                    'Rennes' =>'Rennes',
-                    'Niort' => 'Niort'
-                ],
-                'label' => 'Campus',
-                'multiple'=>false])
+            ->add('campus',EntityType::class,[
+                'mapped' => false,
+                'label'=>'Campus :',
+                'class'=> Campus::class,
+                'choice_label'=>'name'
+            ])
             ->add('name', TextType::class, [
-                'label' => 'Le nom de la série contient' ])
+                'label' => 'Le nom de la sortie contient' ])
             ->add('start', DateType::class, [
                 'mapped' => false,
                 'html5' => true,
@@ -39,19 +39,19 @@ class SearchTripType extends AbstractType
                 'label' => 'et'])
             ->add('organizer', CheckboxType::class, [
                 'mapped' => false,
-                'label'    => 'Sorties dont je suis l\'organisateur/trice',
+                'label'    => 'Sorties dont je suis l\'organisateur/trice ',
                 'required' => false])
             ->add('participant', CheckboxType::class, [
                 'mapped' => false,
-                'label'    => 'Sorties auxquelles je suis inscrit/e',
+                'label'    => 'Sorties auxquelles je suis inscrit/e ',
                 'required' => false])
             ->add('notParticipant', CheckboxType::class, [
                 'mapped' => false,
-                'label'    => 'Sorties auxquelles je ne suis pas inscrit/e',
+                'label'    => 'Sorties auxquelles je ne suis pas inscrit/e ',
                 'required' => false])
             ->add('state', CheckboxType::class, [
                 'mapped' => false,
-                'label'    => 'Sorties passées',
+                'label'    => 'Sorties passées' ,
                 'required' => false])
         ;
     }

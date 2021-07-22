@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\City;
+use App\Entity\Place;
+use App\Entity\State;
 use App\Entity\Trip;
+use App\Entity\User;
+use App\Form\CityFormType;
+use App\Form\PlaceFormType;
+use App\Form\Trip1Type;
 use App\Form\TripCancelType;
-use App\Form\TripDeleteType;
 use App\Form\TripType;
-use App\Repository\PlaceRepository;
 use App\Repository\TripRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,51 +25,64 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TripController extends AbstractController
 {
+
+//    -------------------------------------------------------------------------------------------------------------
     /**
      * @Route("/create", name="create")
      */
-
- //#2002: Créer une sortie:
     public function create(
         Request $request,
-        EntityManagerInterface $entityManager,
-        PlaceRepository $placeRepository,
-        UserRepository $userRepository
+        EntityManagerInterface $entityManager
     ): Response
     {
         //afficher le formulaire
-        $trip = new Trip();
-        $currentUsername = $this->getUser()->getUserIdentifier();
-        //$trip->setState(1);
-        //$trip->setCampus(campus.id);
-        //$trip->setOrganizer($currentUsername);
-        $tripForm = $this->createForm(TripType::class, $trip);
+        $trip =  new Trip();
+        $place= new Place();
+        $city= new City();
+        $user=$this->getUser();
 
+        $form1= $this->createForm(Trip1Type::class, $trip);
+        $form2= $this->createForm(PlaceFormType::class, $place);
+        $form3 = $this->createForm(CityFormType::class, $city);
 
-        //insérer les données dans l'instance
-        $tripForm->handleRequest($request);
-dump($request);
+        $form1->handleRequest($request);
+        $form2->handleRequest($request);
+        $form3->handleRequest($request);
 
-            //traiter le formulaire
-        if ($tripForm->isSubmitted() && $tripForm->isValid()) {
-            $entityManager=$this->getDoctrine()->getManager();
+        //traiter le formulaire
+
+        if($form2->isSubmitted() && $form2->isValid()){
+            $entityManager= $this->getDoctrine()->getManager();
+            $entityManager->persist($place);
+            $entityManager->flush();
+        }
+
+        if($form3->isSubmitted() && $form3->isValid()){
+            $entityManager= $this->getDoctrine()->getManager();
+            $entityManager->persist($city);
+            $entityManager->flush();
+        }
+
+        if ($form1->isSubmitted() && $form1->isValid()) {
+            $trip->setOrganizer($user);
+            $trip->setPlace($place);
+            $entityManager= $this->getDoctrine()->getManager();
             $entityManager->persist($trip);
             $entityManager->flush();
+
 
             //afficher un message flash
             $this->addFlash('success', 'Votre sortie a bien été créee');
 
-            //redirection
-            return $this->redirectToRoute('trip_display',['id' =>$trip->getId()]);
+            return $this->redirectToRoute('main_home');
         }
-
         return $this->render('trip/create.html.twig', [
-            'tripForm'=>$tripForm->createView(),
-            'placeDisplay' =>$placeRepository->displayPlace(1),
-            'campusOrganizer'=>$userRepository->NameCampusByIdUser(22)
+            'CityFormType' => $form3->createView(),
+            'Trip1Type'=>$form1->createView(),
+            'PlaceFormType'=>$form2->createView(),
         ]);
     }
-
+//    -------------------------------------------------------------------------------------------------------------
     /**
      * @Route("/display/{id}", name="display")
      */
@@ -79,8 +96,8 @@ dump($request);
             throw $this->createNotFoundException('La sortie n\'existe pas');
         }
         foreach ($trip->getParticipant() as $participants) {
-           $participants->getUserName();
-           $participants->getFirstName();
+            $participants->getUserName();
+            $participants->getFirstName();
             $participants->getLastname();
         }
         return $this->render('trip/display.html.twig', [
@@ -90,7 +107,7 @@ dump($request);
 
         ]);
     }
-
+//    -------------------------------------------------------------------------------------------------------------
     /**
      * @Route("/cancel/{id}", name="cancel")
      */
@@ -102,30 +119,33 @@ dump($request);
         EntityManagerInterface $entityManager)
     {
         $trip = $entityManager->getRepository(Trip::class)->find($id);
+        $state= $entityManager->getRepository(State::class)->find(6);
 
         if (!$trip) {
             throw $this->createNotFoundException('La sortie n\'existe pas');
         }
         $tripCancelForm = $this->createForm(TripCancelType::class, $trip);
+        $tripCancelForm->handleRequest($request);
 
         //traiter le formulaire
         if ($tripCancelForm->isSubmitted() && $tripCancelForm->isValid()) {
-
-            $trip->setStates();
+            $trip->setState( $state);
+            $entityManager= $this->getDoctrine()->getManager();
             $entityManager->flush();
 
             //afficher un message flash
             $this->addFlash('success', 'Votre sortie a bien été annulée');
+
+            return $this->redirectToRoute('main_home');
         }
 
         return $this->render('trip/cancel.html.twig', [
             'controller_name' => 'TripController',
             'tripCancelForm'=>$tripCancelForm->createView(),
             'tripDisplay' =>$tripRepository->displayTrip($id),
-//
         ]);
     }
-
+//    -------------------------------------------------------------------------------------------------------------
     /**
      * @Route("/edit/{id}", name="edit")
      */
@@ -145,10 +165,64 @@ dump($request);
         }
         return $this->render('trip/edit.html.twig', [
             'tripForm'=>$tripForm->createView(),
+            'trip'=> $trip
         ]);
 
+    }
+    //    -------------------------------------------------------------------------------------------------------------
+    /**
+     * @Route("/{id_user}/{id_trip}/registerParticipant", name="registerParticipant")
+     */
 
+    public function registerParticipant( $id_user, $id_trip,Request $request, EntityManagerInterface $entityManager)
+    {
+        $user = $this->getDoctrine()->getRepository(User::class)->find($id_user);
+        $trip = $this->getDoctrine()->getRepository(Trip::class)->find($id_trip);
+        $trip->addParticipant( $user);
+        $entityManager->flush();
+        return $this->redirectToRoute('main_home');
+    }
+//    -------------------------------------------------------------------------------------------------------------
+    /**
+     * @Route("/{id_user}/{id_trip}/giveUpParticipant", name="giveUpParticipant")
+     */
+
+
+    public function giveUpParticipant($id_user,$id_trip, Request $request, TripRepository $tripRepository, EntityManagerInterface $entityManager)
+    {
+
+        $trip = $this->getDoctrine()->getRepository(Trip::class)->find($id_trip);
+        $user = $this->getDoctrine()->getRepository(User::class)->find($id_user);
+        $trip->removeParticipant( $user);
+        $entityManager->flush();
+        return $this->redirectToRoute('main_home');
+    }
+    //    -------------------------------------------------------------------------------------------------------------
+    /**
+     * @Route("/{id}/publishTrip", name="publishTrip")
+     */
+
+
+    public function publishTrip($id,
+                                Request $request,
+                                TripRepository $tripRepository,
+                                EntityManagerInterface $entityManager)
+    {
+
+        $trip = $this->getDoctrine()->getRepository(Trip::class)->find($id);
+        $state= $entityManager->getRepository(State::class)->find(2);
+
+        if (!$trip) {
+            throw $this->createNotFoundException('La sortie n\'existe pas');
+        }
+
+        $trip->setState( $state);
+        $entityManager= $this->getDoctrine()->getManager();
+        $entityManager->flush();
+
+        //afficher un message flash
+        $this->addFlash('success', 'Votre sortie a bien été publiée');
+
+        return $this->redirectToRoute('main_home');
     }
 }
-        
-

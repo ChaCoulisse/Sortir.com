@@ -46,7 +46,7 @@ class Place
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="places")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $city;
 
@@ -113,12 +113,12 @@ class Place
         return $this;
     }
 
-    public function getCity(): ?City
+    public function getCity(): City
     {
         return $this->city;
     }
 
-    public function setCity(?City $city): self
+    public function setCity(City $city): self
     {
         $this->city = $city;
 

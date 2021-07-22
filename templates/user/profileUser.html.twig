@@ -17,13 +17,13 @@
         <p>Email : {{ user.email }}</p>
         <p>Campus : {{ user.campus.name }}</p>
     </div>
-    <div class="">
+    <div>
         {% if app.user.id == user.id %}
-            <a href="{{ path('user_modify') }}">Modifier le profil</a>
+            <a href="{{ path('user_modify') }}" class="a-button">Modifier le profil</a>
         {% endif %}
     </div>
-    <div class="">
-        <a href="{{ path('main_home') }}">Retour</a>
+    <div>
+        <a href="{{ path('main_home') }}" class="a-button">Retour</a>
     </div>
 
 {% endblock %}

@@ -37,7 +37,6 @@ class Trip
 
     /**
      * @Assert\NotBlank(message="Veuillez rentrer une durée")
-     * @Assert\GreaterThan(0)
      * @ORM\Column(type="time")
      */
     private $duration;
@@ -65,7 +64,7 @@ class Trip
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="organizedTrips")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $organizer;
 
@@ -142,6 +141,7 @@ class Trip
         return $this;
     }
 
+
     public function getLimitDate(): ?\DateTimeInterface
     {
         return $this->limitDate;
@@ -178,12 +178,12 @@ class Trip
         return $this;
     }
 
-    public function getOrganizer(): ?User
+    public function getOrganizer(): User
     {
         return $this->organizer;
     }
 
-    public function setOrganizer(?User $organizer): self
+    public function setOrganizer(User $organizer): self
     {
         $this->organizer = $organizer;
 
@@ -250,7 +250,7 @@ class Trip
         return $this;
     }
 
-    public function getCancelReason(): ?string
+    public function getCancelReason(): string
     {
         return $this->cancelReason;
     }

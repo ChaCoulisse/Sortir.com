@@ -3,39 +3,30 @@
 {% block title %}Créer une sortie{% endblock %}
 
 {% block body %}
-    <h1>Créer une sortie</h1>
-    <div class="col-left">
-        {{ form_start(tripForm) }}
-        {{ form_row(tripForm.name) }}
-        {{ form_row(tripForm.startHour) }}
-        {{ form_row(tripForm.limitDate) }}
-        {{ form_row(tripForm.limitedPlace) }}
-        {{ form_row(tripForm.duration) }}
-        {{ form_row(tripForm.infoTrip) }}
-    </div>
-    <br>
-    <div class="col-right">
-    {% for campus in campusOrganizer%}
-        <p>Campus : {{campus.campus.name }} (revoir parametre req 22)</p>
-    {% endfor %}
-    {% for place in placeDisplay%}
-        {{ form_row(tripForm.city) }}
-        {{ form_row(tripForm.place) }}
-        <p>Rue (revoir parametre req 1) :{{place.street}}</p>
-        <p>Code Postal (revoir parametre req 1) : {{place.city.zipCode}}</p>
-        <p>Latitude (revoir parametre req 1): {{place.latitude}}</p>
-        <p>Latitude (revoir parametre req 1): {{place.longitude}}</p>
-    </div>
-    {% endfor %}
-    <br>
-    <div class="bottom">
-    <button class="btn">Enregistrer</button>
-    <button type="submit" class="btn">Publier la sortie</button>
-    <a href="{{ path('main_home') }}" title="Annuler">Annuler</a>
 
-        {% for error in field_errors(tripForm.name) %}
+    <h1>Créer une sortie </h1>
+
+    {{ form_start(Trip1Type) }}
+    {{ form_start(CityFormType) }}
+    {{ form_start(PlaceFormType) }}
+
+    {{ form_widget(Trip1Type) }}
+    {{ form_widget(CityFormType) }}
+    {{ form_widget(PlaceFormType) }}
+    <button type="submit" class="a-button">Créer une sortie</button>
+
+    {% for error in field_errors(Trip1Type.name) %}
         <div class="error">{{ error }}</div>
-{% endfor %}
-        {{ form_end(tripForm) }}
-    </div>
+    {% endfor %}
+    {% for error in field_errors(CityFormType.name) %}
+        <div class="error">{{ error }}</div>
+    {% endfor %}
+    {% for error in field_errors(PlaceFormType.name) %}
+        <div class="error">{{ error }}</div>
+    {% endfor %}
+
+
+    {{ form_end(PlaceFormType) }}
+    {{ form_end(CityFormType) }}
+    {{ form_end(Trip1Type) }}
 {% endblock %}

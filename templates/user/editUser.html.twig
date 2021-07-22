@@ -26,9 +26,9 @@
             <div class="">
                 {{ form_row(editUserForm.password) }}
             </div>
-            <button type="submit">Enregistrer</button>
+            <button type="submit" class="a-button">Enregistrer</button>
             <div class="">
-            <a href="{{ path('user_profile', {'id': app.user.id}) }}">Retour</a>
+            <a href="{{ path('user_profile', {'id': app.user.id}) }}" class="a-button">Retour</a>
             </div>
         {{ form_end(editUserForm) }}
 

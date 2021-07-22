@@ -8,8 +8,6 @@
 
 
             {% if is_granted("ROLE_ADMIN") %}
-             {# <li><a href="{{ path('main_city') }}" title="Villes">Villes</a></li>
-              <li><a href="{{ path('campus') }}" title="campus">Campus</a></li>#}
                 <li><a href="{{ path('admin_dashboard') }}" title="Admin dashboard">Admin</a></li>
             {% endif %}
 

@@ -3,29 +3,31 @@
 {% block title %}Modifier une sortie{% endblock %}
 
 {% block body %}
-    <h1>Modifier une sortie</h1>
-    <div>
-        {{ form_row(tripForm.name) }}
-        {{ form_row(tripForm.startHour) }}
-        {{ form_row(tripForm.limitDate) }}
-        {{ form_row(tripForm.limitedPlace) }}
-        {{ form_row(tripForm.duration) }}
-        {{ form_row(tripForm.infoTrip) }}
-    </div>
-    <div>
-        {{ form_row(tripForm.campus) }}
-        {{ form_row(tripForm.city) }}
-        {{ form_row(tripForm.place) }}
-        <p>Rue : insérer la rue du lieu</p>
-        <p>Code Postal : insérer le CP du lieu</p>
-        <p>Latitude : insérer la latitude du lieu</p>
-        <p>Latitude : insérer la longitude du lieu</p>
-    </div>
+<h1>Modifier une sortie</h1>
+<div>
+    {{ form_start(tripForm) }}
+    {{ form_row(tripForm.name) }}
+    {{ form_row(tripForm.startHour) }}
+    {{ form_row(tripForm.limitDate) }}
+    {{ form_row(tripForm.limitedPlace) }}
+    {{ form_row(tripForm.duration) }}
+    {{ form_row(tripForm.infoTrip) }}
+</div>
+<div>
+    {{ form_row(tripForm.campus) }}
+    {{ form_row(tripForm.city) }}
+    {{ form_row(tripForm.place) }}
+    {{ form_row(tripForm.street) }}
+    {{ form_row(tripForm.zip_code) }}
+    {{ form_row(tripForm.latitude) }}
+    {{ form_row(tripForm.longitude) }}
+</div>
 
-    <br>
-    <button type="submit" class="btn">Enregistrer</button>
-    <button type="submit" class="btn">Publier la sortie</button>
-    <button type="submit" class="btn">Supprimer la sortie</button>
-{#    <a href="{{ path('trip_delete') }}" title="Annuler">Annuler</a>#}
-  <a href="{{ path('trip_delete', {'id':trip.id}) title="Annuler">Afficher</a>
+<br>
+
+    <button type="submit" title="Enregistrer les modifications" class="a-button">Enregistrer</button>
+{{ form_end(tripForm) }}
+    <a href="{{ path('trip_cancel', {'id': trip.id}) }}" title="Annuler la sortie" class="a-button">Annuler la sortie</a>
+<a href="{{ path('main_home') }}" title="Annuler" class="a-button">Accueil</a>
+
 {% endblock %}
