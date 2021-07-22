@@ -71,7 +71,7 @@ class TripController extends AbstractController
         foreach ($trip->getParticipant() as $participants) {
            $participants->getUserName();
            $participants->getFirstName();
-            $participants->getLastname();
+           $participants->getLastname();
         }
         return $this->render('trip/display.html.twig', [
             'controller_name' => 'TripController',

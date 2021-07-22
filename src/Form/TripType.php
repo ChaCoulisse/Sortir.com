@@ -21,7 +21,8 @@ class TripType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label'=>'Nom de la sortie :'
+                'label'=>'Nom de la sortie :',
+                'required' => true,
             ])
             ->add('startHour', DateType::class, [
                 'label'=>'Date et heure de la sortie :',
@@ -43,21 +44,16 @@ class TripType extends AbstractType
                 'label'=>'Description et infos :'
             ])
             ->add('campus',EntityType::class,[
-                'mapped' => false,
                 'label'=>'Campus :',
                 'class'=> Campus::class,
-                'choice_label'=>'name'
             ])
             ->add('city',EntityType::class,[
-                'mapped' => false,
                 'label'=>'Ville :',
                 'class'=> City::class,
-                'choice_label'=>'name'
             ])
             ->add('place', EntityType::class,[
                 'label'=>'Lieu :',
                 'class'=> Place::class,
-                'choice_label'=>'name'
             ])
         ;
     }

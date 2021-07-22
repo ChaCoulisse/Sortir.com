@@ -9,22 +9,23 @@
     <h2>Participant : {{ app.user.username }}</h2>
 
     <div>
-        <div>
-        <h3>Filtrer les sorties</h3>
-            {{ form_row(searchTripForm.campus) }}
-            {{ form_row(searchTripForm.name) }}
+        {{ form_start(searchTripForm) }}
             <div>
-                {{ form_row(searchTripForm.start) }}
-                {{ form_row(searchTripForm.end) }}
+            <h3>Filtrer les sorties</h3>
+                {{ form_row(searchTripForm.campus) }}
+                {{ form_row(searchTripForm.name) }}
+                <div>
+                    {{ form_row(searchTripForm.start) }}
+                    {{ form_row(searchTripForm.end) }}
+                </div>
             </div>
-        </div>
-        <div>
-            {{ form_row(searchTripForm.organizer) }}
-            {{ form_row(searchTripForm.participant) }}
-            {{ form_row(searchTripForm.notParticipant) }}
-            {{ form_row(searchTripForm.state) }}
-        </div>
-        <button type="submit" class="btn">Rechercher</button>
+            <div>
+                {{ form_row(searchTripForm.organizer) }}
+                {{ form_row(searchTripForm.participant) }}
+                {{ form_row(searchTripForm.notParticipant) }}
+                {{ form_row(searchTripForm.state) }}
+            </div>
+        {{ form_end(searchTripForm) }}
     </div>
 
     <div>
@@ -51,7 +52,7 @@
                     <td>{{ trip.participant|length }} / {{ trip.limitedPlace }}</td>
                     <td>{{ trip.state.wording }}</td>
                     <td>{{ trip.organizer.username }}</td>
-                    <td><a href="#">Afficher</a>
+                    <td><a href="{{ path('trip_display', {'id':trip.id}) }}">Afficher</a>
                         {% if trip.organizer.username == app.user.username %}
                             <a href="#">Modifier</a>
 {#                            {{ dump(trip.startHour.add(new DateInterval('PT' ~ trip.duration.timestamp ~ 'S'))) }}#}
@@ -70,5 +71,5 @@
             {% endfor %}
         </tbody>
     </table>
-    <a href="{{ asset('') }}">Créer une sortie</a>
+    <a href="{{ path('trip_create') }}">Créer une sortie</a>
 {% endblock %}

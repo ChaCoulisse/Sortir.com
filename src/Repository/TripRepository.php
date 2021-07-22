@@ -7,7 +7,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Statement;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Trip|null find($id, $lockMode = null, $lockVersion = null)
@@ -27,6 +29,7 @@ class TripRepository extends ServiceEntityRepository
             ->join('trip.campus', 'campus')->addSelect('campus')
             ->join('trip.organizer', 'organizer')->addSelect('organizer')
             ->join('trip.state', 'state')->addSelect('state')
+            ->join('trip.participant', 'participant')->addSelect('participant')
             ->where('state.wording != :archive')
             ->setParameter('archive', 'Archivé')
 //        ->where('campus.name = :campusName');
@@ -45,19 +48,6 @@ class TripRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
-    public function findTrip(){
-        $queryBuilder = $this->createQueryBuilder('trip')
-            ->join('trip.campus', 'campus')->addSelect('campus')
-            ->join('trip.organizer', 'organizer')->addSelect('organizer')
-            ->join('trip.state', 'state')->addSelect('state')
-            ->where('state.wording != :archive')
-            ->setParameter('archive', 'Archivé')
-//        ->where('campus.name = :campusName');
-//        ->setParameter('campusName', $campus);
-            ->addOrderBy('trip.startHour', 'ASC');
-        return $queryBuilder->getQuery()->getResult();
-    }
-
     public function displayTrip($id)
     {
         $queryBuilder = $this->createQueryBuilder('trip')
@@ -71,41 +61,68 @@ class TripRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getResult();
 
     }
-        public function listParticipantsByTrip($id){
-            $queryBuilder = $this->createQueryBuilder('trip')
-                ->join('trip.participantsTrip', 'participants')
-                ->join('user.participantsTrip', 'participant')
-                ->where('trip.id = :id')
-                ->setParameter('id', $id);
-            dd($queryBuilder->getQuery()->getResult());
-        }
 
-    // /**
-    //  * @return Trip[] Returns an array of Trip objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+    public function listParticipantsByTrip($id){
+        $queryBuilder = $this->createQueryBuilder('trip')
+            ->join('trip.participantsTrip', 'participants')
+            ->where('trip.id = :id')
+            ->setParameter('id', $id);
+        dd($queryBuilder->getQuery()->getResult());
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Trip
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+    public function findTripByParameter(int $campusId, string $contain, string $startDate, string $endDate, bool $ownerId, bool $registeredY, bool $registeredN, bool $stateId, int $userId){
+
+        $queryNotIn = $this->createQueryBuilder('user')
+            ->select('participant.id')
+            ->join('user.participant', 'participant')
+            ->where('user.id != :registered');
+
+        $queryBuilder = $this->createQueryBuilder('trip')
+            ->join('trip.campus', 'campus')->addSelect('campus')
+            ->join('trip.organizer', 'organizer')->addSelect('organizer')
+            ->join('trip.state', 'state')->addSelect('state')
+            ->join('trip.participant', 'participant')->addSelect('participant')
+            ->where('state.wording != :archive')
+            ->setParameter('archive', 'Archivé')
+            ->andWhere('trip.campus = :campusId')
+            ->setParameter('campusId', $campusId)
+            ->andWhere('trip.name like :name')
+            ->setParameter('name', '%'.$contain.'%')
+            ->andWhere('trip.startHour >= :start')
+            ->setParameter('start', $startDate)
+            ->andWhere("DATE_ADD(trip.startHour, trip.duration, 'second') <= :end")
+            ->setParameter('end', $endDate);
+//            ->andWhere('trip.campus = :campus')
+//            ->setParameter('campus', $endDate)
+            if($stateId){
+                $queryBuilder->andWhere('trip.state != :stateId')
+                    ->setParameter('stateId', 5);
+            }
+            if ($ownerId){
+                $queryBuilder->andWhere('trip.organizer = :ownerId')
+                    ->setParameter('ownerId', $userId);
+            }
+            if ($registeredY){
+                $queryBuilder->andWhere($queryBuilder->expr()->notIn('participant.id', $queryNotIn->getDQL()))
+                    ->setParameter('registered', $userId);
+            }
+            if($registeredN){
+                $queryBuilder->andWhere('participant.id != :registered')
+                    ->setParameter('registered', $userId);
+            }
+            $queryBuilder->addOrderBy('trip.startHour', 'ASC');
+//        dd($queryBuilder->getQuery()->getResult());
+        return $queryBuilder->getQuery()->getResult();
     }
-    */
+
+    public function updateState($tripId, $stateId)
+    {
+        $queryBuilder = $this->createQueryBuilder('trip')
+            ->where('trip.id = :tripId')
+            ->setParameter('tripId', $tripId)
+            ->update()
+            ->set('trip.state', ':id')
+            ->setParameter('id', $stateId);
+        return $queryBuilder->getQuery()->getResult();
+    }
 }

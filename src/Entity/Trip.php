@@ -21,7 +21,6 @@ class Trip
     private $id;
 
     /**
-     * @Assert\NotBlank(message="Veuillez rentrer un nom de sortie")
      * @Assert\Length (min=2, max=100)
      * @ORM\Column(type="string", length=100)
      */
